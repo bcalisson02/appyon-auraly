@@ -1,34 +1,51 @@
 {
   "expo": {
-    "name": "appyon-app",
-    "slug": "appyon-app",
+    "name": "Appyon · Auraly",
+    "slug": "appyon-auraly",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
-    "scheme": "appyonapp",
-    "userInterfaceStyle": "automatic",
+    "scheme": "appyon",
+    "userInterfaceStyle": "dark",
+    "backgroundColor": "#0B081A",
     "ios": {
-      "icon": "./assets/expo.icon"
+      "supportsTablet": false,
+      "infoPlist": {
+        "NSCameraUsageDescription": "Master Aura uses your camera to see your palm."
+      }
     },
     "android": {
       "adaptiveIcon": {
-        "backgroundColor": "#E6F4FE",
+        "backgroundColor": "#0B081A",
         "foregroundImage": "./assets/images/android-icon-foreground.png",
         "backgroundImage": "./assets/images/android-icon-background.png",
         "monochromeImage": "./assets/images/android-icon-monochrome.png"
       },
+      "permissions": ["android.permission.CAMERA"],
       "predictiveBackGestureEnabled": false
     },
     "web": {
-      "output": "server",
-      "favicon": "./assets/images/favicon.png"
+      "output": "single",
+      "favicon": "./assets/images/favicon.png",
+      "name": "Auraly · Love Palm Reading",
+      "backgroundColor": "#0B081A",
+      "themeColor": "#0B081A"
     },
     "plugins": [
       "expo-router",
+      "expo-font",
+      [
+        "expo-camera",
+        {
+          "cameraPermission": "Master Aura uses your camera to see your palm.",
+          "microphonePermission": false,
+          "recordAudioAndroid": false
+        }
+      ],
       [
         "expo-splash-screen",
         {
-          "backgroundColor": "#208AEF",
+          "backgroundColor": "#0B081A",
           "image": "./assets/images/splash-icon.png",
           "imageWidth": 76
         }
