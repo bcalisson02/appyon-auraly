@@ -31,7 +31,7 @@ export function TabBar({ state, navigateToTab }: BottomTabBarProps) {
   return (
     <View pointerEvents="box-none" style={[styles.wrap, { bottom: Math.max(layout.tabBarBottom, insets.bottom + 4) }]}>
       <View style={styles.bar}>
-        <BlurView intensity={40} tint="dark" style={StyleSheet.absoluteFill} />
+        <BlurView intensity={40} tint="dark" style={[StyleSheet.absoluteFill, { borderRadius: radii.pill }]} />
         <View style={[StyleSheet.absoluteFill, styles.tint]} />
         {TABS.map((tab) => {
           const active = tab.route === activeRoute;

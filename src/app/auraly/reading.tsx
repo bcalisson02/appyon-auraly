@@ -63,7 +63,7 @@ export default function FullReading() {
         </View>
 
         <FeatureCard shadow={false}>
-          <FadeImageHeader source={line.art} height={150} y={line.artFocus}>
+          <FadeImageHeader source={line.art} height={150} y={line.artFocus} overlayFrom={0.3}>
             <RomanBadge roman={line.roman} />
           </FadeImageHeader>
           <View style={styles.lineBody}>

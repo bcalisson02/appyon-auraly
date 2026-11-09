@@ -83,7 +83,7 @@ export function Composer({ placeholder, left, disabled, suggestions, lineSelecto
       {lineSelector ? <LineSelector {...lineSelector} /> : null}
       {suggestions.length ? <SuggestedQuestions items={suggestions} /> : null}
       <View style={styles.input}>
-        <BlurView intensity={30} tint="dark" style={StyleSheet.absoluteFill} />
+        <BlurView intensity={30} tint="dark" style={[StyleSheet.absoluteFill, { borderRadius: radii.pill }]} />
         {/* Content row is a View so it paints above the absolute blur layer on web. */}
         <View style={styles.inputRow}>
           <TextInput

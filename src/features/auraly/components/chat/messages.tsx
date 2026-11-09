@@ -176,7 +176,7 @@ export function LineCard({ index, current, onNext }: { index: number; current: b
   return (
     <View style={styles.lineShadow}>
       <FeatureCard shadow={false}>
-        <FadeImageHeader source={l.art} height={196} y={l.artFocus} topShade={0.15}>
+        <FadeImageHeader source={l.art} height={196} y={l.artFocus} overlayFrom={0.35} topShade={0.15}>
           <RomanBadge roman={l.roman} />
         </FadeImageHeader>
         <View style={styles.lineBody}>

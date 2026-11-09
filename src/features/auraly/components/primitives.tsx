@@ -210,7 +210,8 @@ export function SerifTitle({
 export function GlassTag({ children, style }: { children: ReactNode; style?: StyleProp<ViewStyle> }) {
   return (
     <View style={[styles.tag, style]}>
-      <BlurView intensity={24} tint="dark" style={StyleSheet.absoluteFill} />
+      {/* Rounded itself: Chrome doesn't clip backdrop-filter to the parent's radius. */}
+      <BlurView intensity={24} tint="dark" style={[StyleSheet.absoluteFill, { borderRadius: radii.pill }]} />
       <View style={styles.tagInner}>{children}</View>
     </View>
   );

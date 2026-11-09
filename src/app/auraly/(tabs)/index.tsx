@@ -41,7 +41,7 @@ export default function Home() {
         </View>
 
         <FeatureCard onPress={openPalm} accessibilityLabel={`Love Palm Reading. ${cta}`}>
-          <FadeImageHeader source={img.handsRing} height={240} y={0.4}>
+          <FadeImageHeader source={img.handsRing} height={240} y={0.4} overlayFrom={null}>
             <GlassTag>
               <Text style={sans(12, 600)}>New reading</Text>
             </GlassTag>

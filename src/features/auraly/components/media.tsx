@@ -12,32 +12,56 @@ import { CoverImage, CroppedImage } from './primitives';
 
 const AURA_ASPECT = 1122 / 1402;
 
-/** Art header whose bottom fades into the card surface (mask 50% → 100%). */
+const hexToRgb = (hex: string) => {
+  const n = parseInt(hex.replace('#', ''), 16);
+  return `${(n >> 16) & 255},${(n >> 8) & 255},${n & 255}`;
+};
+
+/**
+ * Stops of one overlay that reproduces the prototype's art headers:
+ * the image is masked (opaque to 50%, transparent at 100%) over the card
+ * surface, and an optional gradient overlay (transparent at `overlayFrom`,
+ * surface at 100%) sits on top. Over a solid surface both collapse into a
+ * single surface-colored gradient with alpha = 1 − mask · (1 − overlay).
+ */
+function fadeStops(rgb: string, overlayFrom: number | null, topShade: number) {
+  const ts = [0, overlayFrom ?? 0.25, 0.5, 0.6, 0.7, 0.8, 0.9, 1].filter((t, i, a) => a.indexOf(t) === i).sort((a, b) => a - b);
+  const mask = (t: number) => (t <= 0.5 ? 1 : 1 - (t - 0.5) / 0.5);
+  const overlay = (t: number) => {
+    const from = overlayFrom ?? 1;
+    if (t < from) return topShade * (1 - t / from);
+    return overlayFrom === null ? 0 : (t - from) / (1 - from);
+  };
+  const colors = ts.map((t) => `rgba(${rgb},${(1 - mask(t) * (1 - overlay(t))).toFixed(3)})`);
+  return { colors: colors as [string, string, ...string[]], locations: ts as [number, number, ...number[]] };
+}
+
+/** Art header whose bottom fades into the card surface, matching the prototype's mask + overlay. */
 export function FadeImageHeader({
   source,
   height,
   y = 0.5,
   fadeTo = colors.surface,
+  overlayFrom = 0.45,
   topShade = 0,
   children,
 }: {
   source: number;
   height: number;
   y?: number;
+  /** Card surface the art fades into (hex). */
   fadeTo?: string;
-  /** Extra darkening at the very top (line cards use .15). */
+  /** Where the extra surface overlay starts (null: mask only, as on the Home hero). */
+  overlayFrom?: number | null;
+  /** Surface tint at the very top (line cards use .15). */
   topShade?: number;
   children?: ReactNode;
 }) {
+  const g = fadeStops(hexToRgb(fadeTo), overlayFrom, topShade);
   return (
     <View style={{ height, overflow: 'hidden' }}>
       <CoverImage source={source} y={y} />
-      <LinearGradient
-        colors={[`rgba(11,8,26,${topShade})`, 'rgba(0,0,0,0)', fadeTo]}
-        locations={[0, 0.45, 1]}
-        style={StyleSheet.absoluteFill}
-        pointerEvents="none"
-      />
+      <LinearGradient colors={g.colors} locations={g.locations} style={StyleSheet.absoluteFill} pointerEvents="none" />
       {children}
     </View>
   );

@@ -17,7 +17,7 @@ export function ScreenHeader({ title, onBack }: { title?: string; onBack: () => 
         hitSlop={6}
         style={({ pressed }) => [styles.back, { opacity: pressed ? 0.8 : 1 }]}
       >
-        <BlurView intensity={20} tint="dark" style={StyleSheet.absoluteFill} />
+        <BlurView intensity={20} tint="dark" style={[StyleSheet.absoluteFill, { borderRadius: 20 }]} />
         {/* Wrapped so it paints above the absolute blur layer on web. */}
         <View>
           <Icon name="back" size={18} color={colors.white} />
