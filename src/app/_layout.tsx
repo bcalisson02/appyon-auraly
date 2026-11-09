@@ -7,6 +7,7 @@ import { StatusBar } from 'expo-status-bar';
 import { useEffect } from 'react';
 import { Platform, StyleSheet, View, useWindowDimensions } from 'react-native';
 
+import { DesktopGuide } from '@/components/DesktopGuide';
 import { useAuraly } from '@/features/auraly/store';
 import { appWidthFor, colors, fonts } from '@/features/auraly/theme';
 
@@ -43,6 +44,7 @@ export default function RootLayout() {
         <View style={[styles.app, Platform.OS === 'web' && { maxWidth: appWidthFor(width) }]}>
           <Stack screenOptions={{ headerShown: false, contentStyle: { backgroundColor: colors.bg } }} />
         </View>
+        <DesktopGuide />
       </View>
     </ThemeProvider>
   );
@@ -52,7 +54,9 @@ const styles = StyleSheet.create({
   page: {
     flex: 1,
     backgroundColor: Platform.OS === 'web' ? '#05040D' : colors.bg,
-    alignItems: 'center',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    gap: 64,
   },
   // On desktop browsers the app renders as a phone-width column; phone browsers get the full width.
   app: {

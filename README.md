@@ -48,7 +48,7 @@ vercel deploy --prod     # usa vercel.json (build, pasta dist, rewrite de SPA e 
 6. **Open my full reading** → toque nos rótulos da palma → **Ask Aura about this** (volta ao chat com contexto).
 7. Botão de grade no chat → **Readings** → **Conversations** (o histórico antigo abre a transcrição somente leitura).
 
-**Controles de demo:** pressione e segure o selo de créditos (Home ou chat) para abrir o painel que simula créditos baixos, câmera negada, mão não detectada e "Start over".
+**Controles de demo:** no computador, use o botão "Controles de demo" no painel ao lado do app; no celular, pressione e segure o selo de créditos (Home ou chat) para abrir o painel que simula créditos baixos, câmera negada, mão não detectada e "Start over".
 
 ---
 
@@ -107,7 +107,7 @@ O Risely (Desafio 1) entra como `src/app/risely/` + `src/features/risely/`, reap
 - **Scan com estado local.** A máquina `idle → aligned → run → done` (+ `failed`) é um `useReducer` na própria tela. Fechar o modal desmonta tudo e reseta naturalmente; o store só recebe o resultado (`sendScanToAura`).
 - **Palma em SVG.** `PalmView` (foto + linhas + rótulos) é reutilizado no scan, na miniatura do chat e no resultado. As linhas são desenhadas com `strokeDashoffset` (Reanimated `useAnimatedProps`), usando o comprimento real de cada bézier calculado por amostragem. A mão esquerda espelha foto e linhas, e os rótulos usam âncoras espelhadas para o texto continuar legível.
 - **Animações.** Reanimated: animações CSS (entrada das mensagens, pontos digitando, pulso do guia, feixe do scan) e shared values (encaixe da foto, linhas). As *layout animations* de entrada foram evitadas de propósito: no web elas tornam o item `position: absolute` e quebram o fluxo da lista.
-- **Paridade web.** `FadeMask` usa MaskedView no nativo e CSS `mask-image` no web (o MaskedView não tem implementação web). Camadas de blur ficam atrás do conteúdo, e no desktop o app roda numa coluna de 390 pt, o mesmo frame do design (iPhone 14/15).
+- **Paridade web.** `FadeMask` usa MaskedView no nativo e CSS `mask-image` no web (o MaskedView não tem implementação web). Camadas de blur ficam atrás do conteúdo, e no desktop o app roda numa coluna de 390 pt, o mesmo frame do design (iPhone 14/15), com um painel lateral para quem avalia (roteiro de teste e atalho para os controles de demo). Em navegadores de celular o app ocupa a tela inteira.
 - **Desempenho.** As ilustrações foram reencodadas em WebP (19 MB → 1,9 MB) sem alterar a arte. O blur real fica só em tab bar, composer e tags; os balões usam vidro translúcido.
 - **Design tokens.** Tudo vem de `theme.ts` (cores, tipos Instrument Serif/Geist via `@expo-google-fonts`, raios, sombras). Não há hex soltos nas telas.
 
