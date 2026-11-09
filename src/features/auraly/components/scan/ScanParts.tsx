@@ -2,7 +2,7 @@
 import { LinearGradient } from 'expo-linear-gradient';
 import { useEffect } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
-import Animated, { useAnimatedStyle, useReducedMotion, useSharedValue, withTiming } from 'react-native-reanimated';
+import Animated, { cubicBezier, useAnimatedStyle, useReducedMotion, useSharedValue, withTiming } from 'react-native-reanimated';
 import Svg, { Defs, Path, RadialGradient, Rect, Stop } from 'react-native-svg';
 
 import { HAND_OUTLINE, VIEWBOX, type Hand } from '../../data/lines';
@@ -124,7 +124,7 @@ export function ScanBeam({ height }: { height: number }) {
           animationName: sweep,
           animationDuration: '2.6s',
           animationIterationCount: 'infinite',
-          animationTimingFunction: 'cubic-bezier(0.45, 0, 0.55, 1)',
+          animationTimingFunction: cubicBezier(0.45, 0, 0.55, 1),
         },
       ]}
     >
