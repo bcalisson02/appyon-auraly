@@ -127,8 +127,8 @@ export const shadows = {
 } as const;
 
 export const layout = {
-  /** Web: the app renders inside a phone-width column. */
-  maxWidth: 430,
+  /** Web column = the design's target frame (390×844 pt, iPhone 14/15). */
+  maxWidth: 390,
   screenPadding: 16,
   tabBarHeight: 66,
   tabBarBottom: 24,
