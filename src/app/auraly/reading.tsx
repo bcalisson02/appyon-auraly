@@ -1,6 +1,6 @@
 import { Redirect } from 'expo-router';
 import { useState } from 'react';
-import { Platform, ScrollView, StyleSheet, Text, View, useWindowDimensions } from 'react-native';
+import { ScrollView, StyleSheet, Text, View, useWindowDimensions } from 'react-native';
 
 import { img } from '@/features/auraly/assets';
 import { FeatureCard, RowCard } from '@/features/auraly/components/cards';
@@ -12,7 +12,7 @@ import { ARCHETYPE, lineById, type LineId } from '@/features/auraly/data/lines';
 import { nav } from '@/features/auraly/navigation';
 import { hasFinishedReading, useAuraly } from '@/features/auraly/store';
 import { toast } from '@/features/auraly/store/toast';
-import { colors, layout, radii, sans, serif } from '@/features/auraly/theme';
+import { colors, appWidthFor, radii, sans, serif } from '@/features/auraly/theme';
 
 /** "Your Love Palm": archetype, the labeled palm, the selected line and retention hooks. */
 export default function FullReading() {
@@ -26,7 +26,7 @@ export default function FullReading() {
   const [ready] = useState(() => hasFinishedReading(useAuraly.getState()));
   const line = lineById(selected);
 
-  const appWidth = Platform.OS === 'web' ? Math.min(width, layout.maxWidth) : width;
+  const appWidth = appWidthFor(width);
   const palmWidth = Math.min(350, appWidth - 40);
 
   const ask = () => {

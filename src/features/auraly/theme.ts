@@ -1,3 +1,5 @@
+import { Platform } from 'react-native';
+
 /**
  * Auraly design tokens (from the Love Palm handoff README → "Design tokens").
  * Every screen and component reads from here; no raw hex values elsewhere.
@@ -127,9 +129,15 @@ export const shadows = {
 } as const;
 
 export const layout = {
-  /** Web column = the design's target frame (390×844 pt, iPhone 14/15). */
+  /** Desktop web column = the design's target frame (390×844 pt, iPhone 14/15). */
   maxWidth: 390,
+  /** Below this web viewport width (phones) the app fills the screen. */
+  desktopFrom: 600,
   screenPadding: 16,
   tabBarHeight: 66,
   tabBarBottom: 24,
 } as const;
+
+/** Width the app actually renders at: full screen on phones, the 390 column on desktop browsers. */
+export const appWidthFor = (screenWidth: number) =>
+  Platform.OS === 'web' && screenWidth >= layout.desktopFrom ? layout.maxWidth : screenWidth;

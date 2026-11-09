@@ -1,7 +1,7 @@
 import { Image } from 'expo-image';
 import { Redirect } from 'expo-router';
 import { useEffect, useReducer, useState } from 'react';
-import { Platform, StyleSheet, Text, View, useWindowDimensions } from 'react-native';
+import { StyleSheet, Text, View, useWindowDimensions } from 'react-native';
 import Animated, { Easing, useAnimatedStyle, useReducedMotion, useSharedValue, withTiming } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
@@ -12,7 +12,7 @@ import { HandGuide, RadialGlow, ScanBadge, ScanBeam, Shutter, type ScanPhase } f
 import { LINES } from '@/features/auraly/data/lines';
 import { nav } from '@/features/auraly/navigation';
 import { useAuraly } from '@/features/auraly/store';
-import { colors, layout, sans, serif } from '@/features/auraly/theme';
+import { colors, appWidthFor, sans, serif } from '@/features/auraly/theme';
 
 /* ---------- local state machine ---------- */
 
@@ -86,7 +86,7 @@ export default function ScanScreen() {
   }, [phase]);
 
   // Viewfinder: 3:4, max 340, fits narrow and short screens.
-  const appWidth = Platform.OS === 'web' ? Math.min(dims.width, layout.maxWidth) : dims.width;
+  const appWidth = appWidthFor(dims.width);
   const byHeight = ((dims.height - insets.top - insets.bottom - 300) * 3) / 4;
   const vw = Math.round(Math.max(220, Math.min(340, appWidth - 40, byHeight)));
   const vh = Math.round((vw * 4) / 3);

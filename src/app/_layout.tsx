@@ -5,10 +5,10 @@ import { DarkTheme, Stack, ThemeProvider } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
 import { useEffect } from 'react';
-import { Platform, StyleSheet, View } from 'react-native';
+import { Platform, StyleSheet, View, useWindowDimensions } from 'react-native';
 
 import { useAuraly } from '@/features/auraly/store';
-import { colors, fonts, layout } from '@/features/auraly/theme';
+import { appWidthFor, colors, fonts } from '@/features/auraly/theme';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -18,6 +18,7 @@ const theme = {
 };
 
 export default function RootLayout() {
+  const { width } = useWindowDimensions();
   const [fontsLoaded, fontError] = useFonts({
     [fonts.serif]: InstrumentSerif_400Regular,
     [fonts.serifItalic]: InstrumentSerif_400Regular_Italic,
@@ -39,7 +40,7 @@ export default function RootLayout() {
     <ThemeProvider value={theme}>
       <StatusBar style="light" />
       <View style={styles.page}>
-        <View style={styles.app}>
+        <View style={[styles.app, Platform.OS === 'web' && { maxWidth: appWidthFor(width) }]}>
           <Stack screenOptions={{ headerShown: false, contentStyle: { backgroundColor: colors.bg } }} />
         </View>
       </View>
@@ -53,11 +54,10 @@ const styles = StyleSheet.create({
     backgroundColor: Platform.OS === 'web' ? '#05040D' : colors.bg,
     alignItems: 'center',
   },
-  // On web (desktop browsers) the app renders as a phone-width column.
+  // On desktop browsers the app renders as a phone-width column; phone browsers get the full width.
   app: {
     flex: 1,
     width: '100%',
-    maxWidth: Platform.OS === 'web' ? layout.maxWidth : undefined,
     backgroundColor: colors.bg,
     overflow: 'hidden',
   },

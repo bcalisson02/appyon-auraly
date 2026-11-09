@@ -60,7 +60,10 @@ export function FadeImageHeader({
   const g = fadeStops(hexToRgb(fadeTo), overlayFrom, topShade);
   return (
     <View style={{ height, overflow: 'hidden' }}>
-      <CoverImage source={source} y={y} />
+      {/* The art stops 4 pt short of the edge (where the fade is already opaque), so no image row can peek out at 3x / fractional scales. */}
+      <View style={styles.fadeArt}>
+        <CoverImage source={source} y={y} />
+      </View>
       {/* Overshoots the bottom by 2 pt (clipped) so no image row peeks out at fractional pixel ratios. */}
       <LinearGradient colors={g.colors} locations={g.locations} style={[StyleSheet.absoluteFill, { bottom: -2 }]} pointerEvents="none" />
       {children}
@@ -199,5 +202,6 @@ export function Thumb({ source, size = 52, radius = 16, y = 0.5 }: { source: num
 }
 
 const styles = StyleSheet.create({
+  fadeArt: { position: 'absolute', top: 0, left: 0, right: 0, bottom: 4 },
   backdrop: { position: 'absolute', left: 0, right: 0, top: 0 },
 });
