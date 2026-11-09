@@ -59,7 +59,8 @@ export interface AuralyActions {
   chooseSamplePhoto(): void;
   sendScanToAura(): void;
   nextLine(): void;
-  ask(text: string): void;
+  /** Returns false when the question was not accepted (Aura typing, limit reached…). */
+  ask(text: string): boolean;
   askAbout(id: LineId): void;
   setContextLine(id: LineId): void;
   buyMoreQuestions(): void;

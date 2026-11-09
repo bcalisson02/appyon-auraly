@@ -1,3 +1,4 @@
+import { Redirect } from 'expo-router';
 import { useState } from 'react';
 import { Platform, ScrollView, StyleSheet, Text, View, useWindowDimensions } from 'react-native';
 
@@ -9,7 +10,7 @@ import { CoverImage, Pill, RomanBadge, SerifTitle } from '@/features/auraly/comp
 import { ScreenHeader } from '@/features/auraly/components/ScreenHeader';
 import { ARCHETYPE, lineById, type LineId } from '@/features/auraly/data/lines';
 import { nav } from '@/features/auraly/navigation';
-import { useAuraly } from '@/features/auraly/store';
+import { hasFinishedReading, useAuraly } from '@/features/auraly/store';
 import { toast } from '@/features/auraly/store/toast';
 import { colors, layout, radii, sans, serif } from '@/features/auraly/theme';
 
@@ -21,6 +22,8 @@ export default function FullReading() {
   const toggleReminder = useAuraly((s) => s.toggleReminder);
   const askAbout = useAuraly((s) => s.askAbout);
   const [selected, setSelected] = useState<LineId>('heart');
+  // Opened by URL before the reading exists: send the user to the chat instead of a fake result.
+  const [ready] = useState(() => hasFinishedReading(useAuraly.getState()));
   const line = lineById(selected);
 
   const appWidth = Platform.OS === 'web' ? Math.min(width, layout.maxWidth) : width;
@@ -30,6 +33,8 @@ export default function FullReading() {
     askAbout(selected);
     nav.chat();
   };
+
+  if (!ready) return <Redirect href="/auraly/chat" />;
 
   return (
     <View style={styles.screen}>

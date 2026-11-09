@@ -78,7 +78,11 @@ export const useAuraly = create<AuralyState>()(
       const charge = (amount: number, product: 'reading' | 'questions'): boolean => {
         const { credits } = get();
         if (credits >= amount) {
-          set({ credits: credits - amount });
+          // Older "not enough credits" bubbles for this product are settled by the purchase.
+          set((s) => ({
+            credits: credits - amount,
+            items: s.items.map((m) => (m.kind === 'noCredits' && m.product === product && !m.resolved ? { ...m, resolved: true } : m)),
+          }));
           return true;
         }
         auraSays([{ kind: 'noCredits', product, need: amount, have: credits }], {}, 900);
@@ -189,9 +193,9 @@ export const useAuraly = create<AuralyState>()(
         ask(raw) {
           const text = raw.trim();
           const s = get();
-          if (!text || s.typing || s.stage === 'wait') return;
+          if (!text || s.typing || s.stage === 'wait') return false;
           const reading = isReadingStage(s);
-          if (reading && questionsLeft(s) <= 0) return;
+          if (reading && questionsLeft(s) <= 0) return false;
 
           user(text);
           const used = s.questionsUsed + (reading ? 1 : 0);
@@ -206,12 +210,15 @@ export const useAuraly = create<AuralyState>()(
           }
           if (reading && used >= questionLimit(s)) extra.push({ kind: 'upsell', pack: s.extraPacks });
           auraSays([{ kind: 'aura', text: answer }, ...extra], patch, 1500);
+          return true;
         },
 
         askAbout(id) {
+          if (get().stage !== 'free') return;
           const l = lineById(id);
+          // A reply still "typing" lands first, so this prompt is never dropped.
+          if (get().typing) get().flushPending();
           set({ contextLine: id });
-          if (get().typing) return;
           auraSays(
             [
               {
@@ -238,7 +245,8 @@ export const useAuraly = create<AuralyState>()(
         },
 
         declineCredits(itemId) {
-          if (get().typing) return;
+          const item = get().items.find((m) => m.id === itemId);
+          if (get().typing || !item || item.kind !== 'noCredits' || item.resolved) return;
           set((s) => ({ items: s.items.map((m) => (m.id === itemId && m.kind === 'noCredits' ? { ...m, resolved: true } : m)) }));
           user('Maybe later');
           auraSays([{ kind: 'aura', text: 'Of course. Your palm will still be here when you are ready.' }], {}, 900);

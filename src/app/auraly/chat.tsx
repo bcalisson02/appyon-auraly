@@ -49,7 +49,7 @@ export default function ChatScreen() {
     credits: s.credits,
     paid: s.paid,
     hand: s.hand,
-    cameraActive: s.stage === 'camera' && !s.typing,
+    cameraActive: s.stage === 'camera',
     currentLine: s.stage === 'line' && !s.typing ? s.lineIndex : null,
     extraPacks: s.extraPacks,
     reminderOn: s.reminderOn,
@@ -113,12 +113,14 @@ export default function ChatScreen() {
         onCreditsLongPress={nav.demo}
       />
 
-      <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
+      <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === 'web' ? undefined : 'padding'}>
         <FadeMask top={28} bottom={44} style={{ flex: 1 }}>
           <ScrollView
             ref={scrollRef}
             contentContainerStyle={styles.list}
             onContentSizeChange={() => scrollRef.current?.scrollToEnd({ animated: true })}
+            // The viewport also shrinks when suggestions come back after "Typing…": stay pinned to the last message.
+            onLayout={() => scrollRef.current?.scrollToEnd({ animated: true })}
             keyboardShouldPersistTaps="handled"
             showsVerticalScrollIndicator={false}
           >

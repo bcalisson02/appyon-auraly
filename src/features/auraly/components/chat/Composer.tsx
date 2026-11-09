@@ -65,7 +65,8 @@ interface ComposerProps {
   disabled: boolean;
   suggestions: Suggestion[];
   lineSelector: { value: LineId; onChange(id: LineId): void } | null;
-  onSend(text: string): void;
+  /** Returns false when the message was not accepted; the draft is then kept. */
+  onSend(text: string): boolean;
 }
 
 export function Composer({ placeholder, left, disabled, suggestions, lineSelector, onSend }: ComposerProps) {
@@ -74,8 +75,7 @@ export function Composer({ placeholder, left, disabled, suggestions, lineSelecto
 
   const send = () => {
     if (disabled || !text.trim()) return;
-    onSend(text);
-    setText('');
+    if (onSend(text)) setText('');
   };
 
   return (

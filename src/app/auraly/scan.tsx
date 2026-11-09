@@ -1,5 +1,6 @@
 import { Image } from 'expo-image';
-import { useEffect, useReducer } from 'react';
+import { Redirect } from 'expo-router';
+import { useEffect, useReducer, useState } from 'react';
 import { Platform, StyleSheet, Text, View, useWindowDimensions } from 'react-native';
 import Animated, { Easing, useAnimatedStyle, useReducedMotion, useSharedValue, withTiming } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -65,6 +66,8 @@ export default function ScanScreen() {
   const notDetectedDemo = useAuraly((s) => s.demo.handNotDetected);
   const sendScanToAura = useAuraly((s) => s.sendScanToAura);
 
+  // Only reachable from the camera step; a direct URL in any other stage goes to the chat.
+  const [allowed] = useState(() => useAuraly.getState().stage === 'camera');
   const [scan, dispatch] = useReducer(reducer, { phase: 'idle', step: 0, mode: notDetectedDemo ? 'notDetected' : 'normal' });
   const { phase, step, mode } = scan;
 
@@ -101,6 +104,8 @@ export default function ScanScreen() {
     };
   });
   const blurStyle = useAnimatedStyle(() => ({ opacity: 1 - settle.value }));
+
+  if (!allowed) return <Redirect href="/auraly/chat" />;
 
   const close = () => nav.back(nav.chat);
   const send = () => {
