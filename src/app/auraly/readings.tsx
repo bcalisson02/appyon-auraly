@@ -4,6 +4,7 @@ import { img } from '@/features/auraly/assets';
 import { Tile, TileGrid } from '@/features/auraly/components/cards';
 import { PageTitle, ScreenHeader } from '@/features/auraly/components/ScreenHeader';
 import { nav } from '@/features/auraly/navigation';
+import { count } from '@/features/auraly/format';
 import { hasFinishedReading, useAuraly } from '@/features/auraly/store';
 import { toast } from '@/features/auraly/store/toast';
 import { colors } from '@/features/auraly/theme';
@@ -39,7 +40,7 @@ export default function Readings() {
     },
     {
       title: 'Conversations',
-      subtitle: `${used} questions asked`,
+      subtitle: `${count(used, 'question')} asked`,
       source: img.writing,
       y: 0.4,
       onPress: nav.conversations,

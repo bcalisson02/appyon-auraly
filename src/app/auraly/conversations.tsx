@@ -5,6 +5,7 @@ import { ConversationRow } from '@/features/auraly/components/ConversationRow';
 import { PageTitle, ScreenHeader } from '@/features/auraly/components/ScreenHeader';
 import { PAST_CONVERSATIONS } from '@/features/auraly/data/conversations';
 import { nav } from '@/features/auraly/navigation';
+import { count } from '@/features/auraly/format';
 import { lastAuraText, questionsLeft, useAuraly } from '@/features/auraly/store';
 import { colors } from '@/features/auraly/theme';
 
@@ -26,7 +27,7 @@ export default function Conversations() {
             title="Love Palm Reading"
             date={paid ? 'Tonight' : ''}
             preview={preview ?? 'Not started yet'}
-            meta={paid ? `${used} questions asked · ${left} left` : 'Tap to begin'}
+            meta={paid ? `${count(used, 'question')} asked · ${left} left` : 'Tap to begin'}
             art={img.handsRing}
             artFocus={0.45}
             onPress={nav.chat}

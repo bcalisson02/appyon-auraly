@@ -6,6 +6,7 @@ import { img } from '@/features/auraly/assets';
 import { FeatureCard, RowCard, Tile, TileGrid } from '@/features/auraly/components/cards';
 import { AuraAvatar, FadeImageHeader, HeaderBackdrop, Thumb } from '@/features/auraly/components/media';
 import { CreditsPill, GlassTag, Pill, SerifTitle } from '@/features/auraly/components/primitives';
+import { count } from '@/features/auraly/format';
 import { hasFinishedReading, PRICE, questionsLeft, useAuraly } from '@/features/auraly/store';
 import { toast } from '@/features/auraly/store/toast';
 import { colors, layout, sans, serif } from '@/features/auraly/theme';
@@ -68,7 +69,7 @@ export default function Home() {
           <RowCard
             leading={<Thumb source={img.devotedFlame} />}
             title="Your Love Palm"
-            subtitle={`The Devoted Flame · ${left} questions left`}
+            subtitle={`The Devoted Flame · ${count(left, 'question')} left`}
             onPress={() => router.push('/auraly/reading')}
           />
         ) : null}

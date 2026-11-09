@@ -1,7 +1,7 @@
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, useWindowDimensions } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { colors, sans } from '../../theme';
+import { appWidthFor, colors, sans } from '../../theme';
 import { AuraAvatar } from '../media';
 import { CircleButton, CreditsPill, Dot } from '../primitives';
 
@@ -17,8 +17,10 @@ interface Props {
 /** Solid header so messages never show behind it. */
 export function ChatHeader({ status, credits, hasReading, onBack, onReadings, onCreditsLongPress }: Props) {
   const insets = useSafeAreaInsets();
+  // ≤ 380 pt (e.g. 360): tighter spacing so "Palm reader · online" still fits on one line.
+  const compact = appWidthFor(useWindowDimensions().width) < 380;
   return (
-    <View style={[styles.header, { paddingTop: insets.top + 10 }]}>
+    <View style={[styles.header, { paddingTop: insets.top + 10 }, compact && styles.compact]}>
       <CircleButton icon="back" size={36} label="Back" onPress={onBack} />
       <AuraAvatar size={40} glow />
       <View style={styles.title}>
@@ -48,6 +50,7 @@ const styles = StyleSheet.create({
     paddingBottom: 10,
     backgroundColor: colors.bg,
   },
+  compact: { gap: 6, paddingHorizontal: 12 },
   title: { flex: 1, minWidth: 0, gap: 2 },
   status: { flexDirection: 'row', alignItems: 'center', gap: 6 },
 });

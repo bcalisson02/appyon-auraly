@@ -70,7 +70,7 @@ export function Tile({
         <Text style={sans(14.5, 600)} numberOfLines={1}>
           {title}
         </Text>
-        <Text style={[sans(12), { color: colors.textFaint }]} numberOfLines={1}>
+        <Text style={[sans(12), { color: colors.textFaint }]} numberOfLines={2}>
           {subtitle}
         </Text>
       </View>
@@ -102,7 +102,7 @@ export function RowCard({
     <>
       {leading}
       <View style={styles.rowText}>
-        <Text style={sans(14.5, 600)} numberOfLines={1}>
+        <Text style={sans(14.5, 600)} numberOfLines={2}>
           {title}
         </Text>
         <Text style={[sans(12.5, 400, 1.5), { color: colors.textFaint }]}>{subtitle}</Text>
