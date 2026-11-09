@@ -61,7 +61,8 @@ export function FadeImageHeader({
   return (
     <View style={{ height, overflow: 'hidden' }}>
       <CoverImage source={source} y={y} />
-      <LinearGradient colors={g.colors} locations={g.locations} style={StyleSheet.absoluteFill} pointerEvents="none" />
+      {/* Overshoots the bottom by 2 pt (clipped) so no image row peeks out at fractional pixel ratios. */}
+      <LinearGradient colors={g.colors} locations={g.locations} style={[StyleSheet.absoluteFill, { bottom: -2 }]} pointerEvents="none" />
       {children}
     </View>
   );
